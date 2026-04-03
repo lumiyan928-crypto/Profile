@@ -1165,24 +1165,18 @@
     <div class="floating-chip chip-3">危机干预 · 双重安全机制</div>
 
     <div class="hero-illustration">
-      <div class="phone-mockup">
-        <div class="phone-screen">
-          <div class="phone-notch"></div>
-          <div class="phone-cat-area">
-            <div class="cat-emoji-large">🐱</div>
-          </div>
-          <div class="phone-bubble">
-            小然在这里，慢慢说，我听着呢。今天发生什么了？
-          </div>
-          <div class="phone-tags">
-            <span class="phone-tag">Agent 路线 A · CBT</span>
-            <span class="phone-tag">🐟 ×3</span>
-          </div>
-          <div class="phone-input-bar">
-            <div class="phone-input-dot"></div>
-            <div class="phone-input-dot"></div>
-            <div class="phone-input-dot"></div>
-          </div>
+      <div class="phone-mockup" style="overflow:hidden;position:relative">
+        <!-- 截图轮播 -->
+        <div class="phone-carousel" id="phoneCarousel" style="display:flex;width:300%;height:100%;transition:transform 0.5s ease;">
+          <img src="images/cat-bureau-chat.png" alt="对话页" style="width:calc(100%/3);height:100%;object-fit:cover;flex-shrink:0;"/>
+          <img src="images/cat-bureau-history.png" alt="记录页" style="width:calc(100%/3);height:100%;object-fit:cover;flex-shrink:0;"/>
+          <img src="images/cat-bureau-profile.png" alt="我的页面" style="width:calc(100%/3);height:100%;object-fit:cover;flex-shrink:0;"/>
+        </div>
+        <!-- 轮播指示器 -->
+        <div style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:2;">
+          <div class="carousel-dot active" style="width:6px;height:6px;border-radius:50%;background:var(--siamese);opacity:1;transition:opacity 0.3s;"></div>
+          <div class="carousel-dot" style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.5);transition:opacity 0.3s;"></div>
+          <div class="carousel-dot" style="width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.5);transition:opacity 0.3s;"></div>
         </div>
       </div>
     </div>
@@ -1784,6 +1778,25 @@
   document.querySelectorAll('.hero .reveal').forEach((el, i) => {
     setTimeout(() => el.classList.add('visible'), 200 + i * 120);
   });
+
+  // Phone screenshot carousel
+  (function() {
+    const carousel = document.getElementById('phoneCarousel');
+    const dots = document.querySelectorAll('.carousel-dot');
+    if (!carousel || !dots.length) return;
+    let current = 0;
+    const total = 3;
+    function goTo(idx) {
+      current = idx % total;
+      carousel.style.transform = `translateX(-${current * (100/total)}%)`;
+      dots.forEach((d, i) => {
+        d.style.background = i === current ? '#C4956A' : 'rgba(255,255,255,0.5)';
+        d.style.opacity = i === current ? '1' : '0.7';
+      });
+    }
+    setInterval(() => goTo(current + 1), 3000);
+    dots.forEach((d, i) => d.addEventListener('click', () => goTo(i)));
+  })();
 </script>
 </body>
 </html>
